@@ -25,6 +25,9 @@ public class Producto {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    @ManyToMany()
+    @JoinTable(name = "producto_proveedores")
+    private List<Proveedor> proveedores = new ArrayList<>();
 
 
     public Producto() {
@@ -78,6 +81,14 @@ public class Producto {
         this.categoria = categoria;
     }
 
+    public List<Proveedor> getProveedores() {
+        return proveedores;
+    }
+
+    public void setProveedores(List<Proveedor> proveedores) {
+        this.proveedores = proveedores;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Producto{");
@@ -88,5 +99,10 @@ public class Producto {
         sb.append(", categoria=").append(categoria);
         sb.append('}');
         return sb.toString();
+    }
+
+    public void addProveedor(Proveedor proveedor) {
+        this.proveedores.add(proveedor);
+        proveedor.getProductos().add(this);
     }
 }
