@@ -1,6 +1,10 @@
 package com.jaroso.springjpa.entities;
 
 import jakarta.persistence.*;
+import org.springframework.transaction.annotation.Transactional;
+
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +29,7 @@ public class Producto {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "producto_proveedores")
     private List<Proveedor> proveedores = new ArrayList<>();
 
@@ -105,4 +109,6 @@ public class Producto {
         this.proveedores.add(proveedor);
         proveedor.getProductos().add(this);
     }
+
+
 }

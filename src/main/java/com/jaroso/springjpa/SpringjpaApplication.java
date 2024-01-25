@@ -5,9 +5,11 @@ import com.jaroso.springjpa.repositories.LineaPedidoRepository;
 import com.jaroso.springjpa.repositories.PedidoRepository;
 import com.jaroso.springjpa.repositories.ProductoRepository;
 import com.jaroso.springjpa.repositories.ProveedorRepository;
+import org.hibernate.Hibernate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -74,11 +76,29 @@ public class SpringjpaApplication {
             System.out.println(p.getId());
         });
 
+        //MANYTOMANY mejor hacerlo con fetch = FetchType.EAGER aunque baje el rendimiento
         Proveedor prv1 = new Proveedor(null, "Pccomponentes", "Alhama", "656252114", "pc@gmail.com");
         proveedorRepository.save(prv1);
 
+        /*
         iphone.addProveedor(prv1);
+        teclado.addProveedor(prv1);
         productoRepository.save(iphone);
+        productoRepository.save(teclado);
+        */
+
+        prv1.addProducto(iphone);
+        prv1.addProducto(teclado);
+        proveedorRepository.save(prv1);
+
+        System.out.println("Proveedores del iphone");
+        iphone.getProveedores().stream().forEach(System.out::println);
+        System.out.println("Productos que ofrece Pccomponentes");
+        prv1.getProductos().stream().forEach(System.out::println);
+
+
+
+
 
 
 

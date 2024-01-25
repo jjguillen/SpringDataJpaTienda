@@ -1,6 +1,8 @@
 package com.jaroso.springjpa.entities;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,8 +77,16 @@ public class Proveedor {
         return productos;
     }
 
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
+
+    @Transactional
     public void addProducto(Producto producto) {
         this.productos.add(producto);
+        //Hibernate.initialize(producto.getProveedores()); para el LAZY
         producto.getProveedores().add(this);
     }
+
+
 }
